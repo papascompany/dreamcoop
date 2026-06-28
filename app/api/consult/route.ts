@@ -16,11 +16,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
   }
 
-  // honeypot — 봇이 채우면 조용히 성공 응답(실제 처리는 건너뜀).
-  if (typeof body.company_website === "string" && body.company_website.length > 0) {
-    return NextResponse.json({ ok: true });
-  }
-
+  // ⚠️ 과거 honeypot(숨김 필드) 무음 폐기는 자동완성이 그 필드를 채우면 진짜 문의를
+  //    잃게 만들어 제거함. 검증을 통과한 제출은 무조건 저장한다.
   const name = typeof body.name === "string" ? body.name.trim() : "";
   const phone = typeof body.phone === "string" ? body.phone.trim() : "";
   const inquiryType =

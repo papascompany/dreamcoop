@@ -28,8 +28,6 @@ export default function Contact({
       phone: String(data.get("phone") ?? "").trim(),
       inquiryType: String(data.get("inquiryType") ?? ""),
       message: String(data.get("message") ?? "").trim(),
-      // 스팸 방지용 honeypot (사람은 비워둠)
-      company_website: String(data.get("company_website") ?? ""),
     };
 
     if (!payload.name || !payload.phone) {
@@ -148,14 +146,6 @@ export default function Contact({
                     name="message"
                     placeholder="궁금하신 점이나 상황을 자유롭게 적어 주세요"
                   />
-                </div>
-
-                {/* honeypot: 화면/스크린리더에서 숨김 */}
-                <div aria-hidden="true" style={{ position: "absolute", left: "-9999px" }}>
-                  <label>
-                    회사 홈페이지
-                    <input name="company_website" tabIndex={-1} autoComplete="off" />
-                  </label>
                 </div>
 
                 {error ? (
