@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { faq } from "@/lib/content";
+import { faq as faqDefault } from "@/lib/content";
 
-export default function Faq() {
+export default function Faq({
+  data: faq = faqDefault,
+}: {
+  data?: typeof faqDefault;
+}) {
   const [open, setOpen] = useState(0); // 첫 항목 기본 열림, -1 = 모두 닫힘
 
   return (

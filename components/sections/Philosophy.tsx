@@ -1,7 +1,8 @@
 import Slot from "@/components/Slot";
-import { philosophy } from "@/lib/content";
+import { getContent } from "@/lib/content-store";
 
-export default function Philosophy() {
+export default async function Philosophy() {
+  const { philosophy } = await getContent();
   return (
     <section className="sec phil" id="philosophy" aria-label="우리의 철학">
       <div className="container">

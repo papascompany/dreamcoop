@@ -2,9 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import Slot from "@/components/Slot";
-import { process } from "@/lib/content";
+import { process as processDefault } from "@/lib/content";
 
-export default function Process() {
+export default function Process({
+  data: process = processDefault,
+}: {
+  data?: typeof processDefault;
+}) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [prog, setProg] = useState(0);
 

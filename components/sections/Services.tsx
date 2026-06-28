@@ -1,7 +1,8 @@
 import Slot from "@/components/Slot";
-import { services } from "@/lib/content";
+import { getContent } from "@/lib/content-store";
 
-export default function Services() {
+export default async function Services() {
+  const { services } = await getContent();
   return (
     <section className="sec svcs" id="services" aria-label="서비스 안내">
       <div className="container">

@@ -1,6 +1,7 @@
-import { campaign } from "@/lib/content";
+import { getContent } from "@/lib/content-store";
 
-export default function Campaign() {
+export default async function Campaign() {
+  const { campaign } = await getContent();
   return (
     <section className="sec campaign-sec" id={campaign.id} aria-label="효행캠페인">
       <div className="container">

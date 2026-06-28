@@ -361,3 +361,27 @@ export const footer = {
     { href: "#coop", label: "협동조합 안내" },
   ],
 } as const;
+
+/**
+ * 전체 콘텐츠 기본값 집계. 런타임 콘텐츠(content-store)의 fallback이자
+ * 관리자(랜딩관리)가 편집하는 트리의 기준 구조다.
+ */
+export const defaultContent = {
+  company,
+  nav,
+  hero,
+  philosophy,
+  fourDreams,
+  services,
+  product,
+  band,
+  process,
+  memberBenefits,
+  coop,
+  campaign,
+  contact,
+  faq,
+  footer,
+} as const;
+
+export type Content = typeof defaultContent;

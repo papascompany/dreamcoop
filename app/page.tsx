@@ -12,26 +12,29 @@ import Campaign from "@/components/sections/Campaign";
 import Contact from "@/components/sections/Contact";
 import Faq from "@/components/sections/Faq";
 import Footer from "@/components/sections/Footer";
-import { faq } from "@/lib/content";
+import { getContent } from "@/lib/content-store";
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  inLanguage: "ko-KR",
-  mainEntity: faq.items.map((item) => ({
-    "@type": "Question",
-    name: item.q,
-    acceptedAnswer: { "@type": "Answer", text: item.a },
-  })),
-};
+// 관리자 편집이 빌드 없이 즉시 반영되도록 요청 시점 렌더(런타임 콘텐츠 조회).
+export const dynamic = "force-dynamic";
 
-export default function Home() {
+export default async function Home() {
+  const c = await getContent();
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    inLanguage: "ko-KR",
+    mainEntity: c.faq.items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
   return (
     <>
       <a href="#main" className="skip-link">
         본문 바로가기
       </a>
-      <Header />
+      <Header company={c.company} nav={c.nav} />
       <main id="main">
         <Hero />
         <Philosophy />
@@ -39,12 +42,12 @@ export default function Home() {
         <Services />
         <Product />
         <Band />
-        <Process />
+        <Process data={c.process} />
         <MemberBenefits />
         <Coop />
         <Campaign />
-        <Contact />
-        <Faq />
+        <Contact company={c.company} contact={c.contact} />
+        <Faq data={c.faq} />
       </main>
       <Footer />
       <script

@@ -1,7 +1,8 @@
 import Slot from "@/components/Slot";
-import { band } from "@/lib/content";
+import { getContent } from "@/lib/content-store";
 
-export default function Band() {
+export default async function Band() {
+  const { band } = await getContent();
   return (
     <section className="band" aria-label="추모 명언">
       <Slot src={band.image} alt={band.imageAlt} label="추모 · 자연" dark sizes="100vw" />

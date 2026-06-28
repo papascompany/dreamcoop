@@ -1,6 +1,7 @@
-import { fourDreams } from "@/lib/content";
+import { getContent } from "@/lib/content-store";
 
-export default function FourDreams() {
+export default async function FourDreams() {
+  const { fourDreams } = await getContent();
   return (
     <section className="sec dreams-sec" id={fourDreams.id} aria-label="드림상조의 약속">
       <div className="container">

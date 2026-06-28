@@ -1,9 +1,18 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { company, contact } from "@/lib/content";
+import {
+  company as companyDefault,
+  contact as contactDefault,
+} from "@/lib/content";
 
-export default function Contact() {
+export default function Contact({
+  company = companyDefault,
+  contact = contactDefault,
+}: {
+  company?: typeof companyDefault;
+  contact?: typeof contactDefault;
+}) {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

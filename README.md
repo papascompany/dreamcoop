@@ -43,6 +43,12 @@ reference/              # 기존 사이트 백업 등 참조 자료 (git 제외,
 
 > 디자인 시안의 미검증 수치(12,000+·8,400회·98%·1668-0000)는 사실 기반 지표(10만원·후불제·8~10회·24시간)와 실번호로 교체함.
 
+## 랜딩관리 CMS (빌드 없이 실시간 편집)
+관리자가 `/admin/login`에서 로그인 후 `/admin/landing`에서 **모든 텍스트·이미지·카드**를 편집하면 사이트에 즉시 반영된다(빌드 불필요).
+- 백엔드: Supabase **storige** 프로젝트(테이블 `dreamcoop_landing`, 버킷 `dreamcoop`)
+- 상세(연동 계정/프로젝트·환경변수·service_role 추가법): **[docs/CMS.md](docs/CMS.md)**
+- ⚠️ 저장/업로드는 `SUPABASE_SERVICE_ROLE_KEY`가 필요하다(미설정 시 읽기만 동작, 저장 비활성화).
+
 ## 상담 폼 발송 설정
 `lib/notify.ts`가 환경변수로 채널을 선택한다(`.env.example` 참고). 미설정 시 서버 콘솔 마스킹 로깅만 하므로 **운영 전 반드시 설정**할 것.
 - `CONSULT_WEBHOOK_URL` — Slack/알림톡 게이트웨이/Zapier 등

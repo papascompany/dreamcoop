@@ -1,7 +1,8 @@
 import Slot from "@/components/Slot";
-import { coop } from "@/lib/content";
+import { getContent } from "@/lib/content-store";
 
-export default function Coop() {
+export default async function Coop() {
+  const { coop } = await getContent();
   return (
     <section className="sec coop" id="coop" aria-label="협동조합 안내">
       <div className="container">

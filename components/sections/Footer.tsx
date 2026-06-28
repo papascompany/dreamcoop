@@ -1,7 +1,8 @@
 import BrandMark from "@/components/BrandMark";
-import { company, footer } from "@/lib/content";
+import { getContent } from "@/lib/content-store";
 
-export default function Footer() {
+export default async function Footer() {
+  const { company, footer } = await getContent();
   return (
     <footer className="ft">
       <div className="container">

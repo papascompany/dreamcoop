@@ -2,9 +2,15 @@
 
 import { useEffect, useState } from "react";
 import BrandMark from "@/components/BrandMark";
-import { company, nav } from "@/lib/content";
+import { company as companyDefault, nav as navDefault } from "@/lib/content";
 
-export default function Header() {
+export default function Header({
+  company = companyDefault,
+  nav = navDefault,
+}: {
+  company?: typeof companyDefault;
+  nav?: typeof navDefault;
+}) {
   const [solid, setSolid] = useState(false);
   const [open, setOpen] = useState(false);
 

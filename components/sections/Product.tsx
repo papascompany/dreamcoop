@@ -1,6 +1,7 @@
-import { product } from "@/lib/content";
+import { getContent } from "@/lib/content-store";
 
-export default function Product() {
+export default async function Product() {
+  const { product } = await getContent();
   return (
     <section className="sec product-sec" id={product.id} aria-label="상품 구성">
       <div className="container">

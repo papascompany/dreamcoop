@@ -1,11 +1,12 @@
 import Slot from "@/components/Slot";
-import { hero } from "@/lib/content";
+import { getContent } from "@/lib/content-store";
 
 // 하단 정렬 텍스트 가독성 확보용 그라데이션(밝은 실사에서도 안전하도록 하단 강화).
 const heroOverlay =
   "linear-gradient(180deg,rgba(28,40,38,0.34) 0%,rgba(28,40,38,0.18) 42%,rgba(28,40,38,0.74) 100%)";
 
-export default function Hero() {
+export default async function Hero() {
+  const { hero } = await getContent();
   return (
     <section className="hero" id="top">
       <Slot
