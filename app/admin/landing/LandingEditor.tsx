@@ -102,6 +102,35 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
   );
 }
 
+// 업로드 전 브라우저에서 이미지를 리사이즈/압축(긴 변 최대 2000px, JPEG 0.85).
+// 큰 사진도 1MB 미만으로 줄여 서버 액션 본문 한도/전송 실패를 방지한다.
+async function compressImage(file: File): Promise<File> {
+  if (!file.type.startsWith("image/")) return file;
+  try {
+    const bitmap = await createImageBitmap(file);
+    const maxSide = 2000;
+    const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
+    const w = Math.max(1, Math.round(bitmap.width * scale));
+    const h = Math.max(1, Math.round(bitmap.height * scale));
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.drawImage(bitmap, 0, 0, w, h);
+    bitmap.close?.();
+    const blob: Blob | null = await new Promise((res) =>
+      canvas.toBlob((b) => res(b), "image/jpeg", 0.85),
+    );
+    if (!blob) return file;
+    if (blob.size >= file.size && file.size < 1_500_000) return file;
+    const base = file.name.replace(/\.[^.]+$/, "") || "image";
+    return new File([blob], `${base}.jpg`, { type: "image/jpeg" });
+  } catch {
+    return file; // HEIC 등 디코드 불가 시 원본으로 시도
+  }
+}
+
 function ImageField({
   value,
   onChange,
@@ -121,16 +150,21 @@ function ImageField({
     setBusy(true);
     setErr(null);
     setDone(false);
-    const fd = new FormData();
-    fd.append("file", file);
-    const res = await uploadImageAction(fd);
-    setBusy(false);
-    e.target.value = "";
-    if (res.error) {
-      setErr(res.error);
-    } else if (res.url) {
-      onChange(res.url);
-      setDone(true);
+    try {
+      const processed = await compressImage(file);
+      const fd = new FormData();
+      fd.append("file", processed);
+      const res = await uploadImageAction(fd);
+      if (res.error) setErr(res.error);
+      else if (res.url) {
+        onChange(res.url);
+        setDone(true);
+      }
+    } catch {
+      setErr("업로드 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+    } finally {
+      setBusy(false);
+      e.target.value = "";
     }
   }
 
