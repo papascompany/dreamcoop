@@ -1,10 +1,14 @@
 import Header from "@/components/Header";
 import Hero from "@/components/sections/Hero";
 import Philosophy from "@/components/sections/Philosophy";
+import FourDreams from "@/components/sections/FourDreams";
 import Services from "@/components/sections/Services";
+import Product from "@/components/sections/Product";
 import Band from "@/components/sections/Band";
 import Process from "@/components/sections/Process";
+import MemberBenefits from "@/components/sections/MemberBenefits";
 import Coop from "@/components/sections/Coop";
+import Campaign from "@/components/sections/Campaign";
 import Contact from "@/components/sections/Contact";
 import Faq from "@/components/sections/Faq";
 import Footer from "@/components/sections/Footer";
@@ -31,10 +35,14 @@ export default function Home() {
       <main id="main">
         <Hero />
         <Philosophy />
+        <FourDreams />
         <Services />
+        <Product />
         <Band />
         <Process />
+        <MemberBenefits />
         <Coop />
+        <Campaign />
         <Contact />
         <Faq />
       </main>

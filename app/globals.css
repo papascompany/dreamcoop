@@ -43,6 +43,27 @@ body {
   -webkit-font-smoothing: antialiased;
   line-height: 1.6;
   overflow-x: hidden;
+  /* 한국어 줄바꿈: 단어(어절) 중간에서 끊기지 않도록 공백 기준으로만 줄바꿈 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+/* 헤드라인/문구는 여러 줄을 균형 있게 배분 */
+.hh1,
+.h2,
+.stmt,
+.ctah,
+.bandq,
+.ptitle,
+.svc-title {
+  text-wrap: balance;
+}
+.lead,
+.pd,
+.pdesc,
+.svc-desc,
+.ctap,
+.faqAin {
+  text-wrap: pretty;
 }
 
 .serif {
@@ -922,6 +943,158 @@ button:focus-visible {
   gap: 12px;
 }
 
+/* ── 4가지 드림 (약속) ── */
+.dreams-sec {
+  background: var(--paper2);
+}
+.dreams {
+  margin-top: 64px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.dream {
+  background: var(--card);
+  border-radius: 4px;
+  padding: 36px 28px;
+  border-top: 2px solid var(--gold);
+  box-shadow: 0 18px 40px -28px rgba(43, 40, 32, 0.4);
+}
+.dream-num {
+  font-size: 26px;
+  color: rgba(124, 154, 142, 0.5);
+  font-weight: 300;
+}
+.dream-tag {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  font-weight: 600;
+  margin: 10px 0 14px;
+}
+.dream-t {
+  font-size: 21px;
+  font-weight: 600;
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+.dream-d {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.85;
+  margin: 0;
+}
+
+/* ── 상품 구성 ── */
+.product-sec {
+  background: var(--card);
+}
+.prodgrid {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 64px;
+}
+.proditem {
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+}
+.prod-key {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.prod-t {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+.prod-d {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.85;
+  margin: 0 0 12px;
+}
+.prod-note {
+  font-size: 13.5px;
+  color: var(--ink);
+  font-weight: 500;
+  margin: 0;
+  opacity: 0.78;
+}
+.prod-foot {
+  margin-top: 56px;
+  background: var(--paper);
+  border-radius: 6px;
+  padding: 26px 30px;
+  font-size: 14.5px;
+  color: var(--muted);
+  line-height: 1.9;
+  border-left: 3px solid var(--gold);
+}
+
+/* ── 조합원 혜택 ── */
+.benefits-sec {
+  background: var(--paper);
+}
+.benefits {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px 54px;
+}
+.benefit {
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+
+/* ── 효행캠페인 ── */
+.campaign-sec {
+  background: var(--green);
+}
+.campaign-sec .eyebrow {
+  color: var(--sand);
+}
+.campaign-sec .h2 {
+  color: var(--ivory);
+}
+.campaign-sec .lead {
+  color: rgba(244, 238, 226, 0.78);
+}
+.camp-items {
+  margin: 56px auto 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  max-width: 820px;
+}
+.camp-item {
+  background: rgba(244, 238, 226, 0.05);
+  border: 1px solid rgba(244, 238, 226, 0.14);
+  border-radius: 6px;
+  padding: 30px 28px;
+  text-align: center;
+}
+.camp-key {
+  font-size: 26px;
+  color: var(--sand);
+  margin-bottom: 6px;
+}
+.camp-t {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ivory);
+  margin: 0 0 12px;
+}
+.camp-d {
+  font-size: 14.5px;
+  color: rgba(244, 238, 226, 0.7);
+  line-height: 1.8;
+  margin: 0;
+}
+
 /* ── 반응형 (≤900px) ── */
 @media (max-width: 900px) {
   .container {
@@ -1023,6 +1196,21 @@ button:focus-visible {
   .stats {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
+  }
+  .dreams {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .prodgrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .benefits {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .camp-items {
+    grid-template-columns: 1fr;
   }
   .prow {
     grid-template-columns: 1fr;
