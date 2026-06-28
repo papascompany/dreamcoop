@@ -67,7 +67,9 @@ export async function uploadImage(file: File): Promise<string> {
   if (!sb) throw new Error("SUPABASE_SERVICE_ROLE_KEY가 설정되지 않았습니다.");
   const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
   const path = `landing/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext || "jpg"}`;
-  const { error } = await sb.storage.from(STORAGE_BUCKET).upload(path, file, {
+  // 서버 액션에서 받은 File을 ArrayBuffer로 변환해 업로드(대용량/스트리밍 이슈 방지).
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const { error } = await sb.storage.from(STORAGE_BUCKET).upload(path, bytes, {
     contentType: file.type || "image/jpeg",
     upsert: false,
   });

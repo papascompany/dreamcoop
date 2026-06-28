@@ -113,19 +113,25 @@ function ImageField({
 }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
 
   async function onPick(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     setBusy(true);
     setErr(null);
+    setDone(false);
     const fd = new FormData();
     fd.append("file", file);
     const res = await uploadImageAction(fd);
     setBusy(false);
     e.target.value = "";
-    if (res.error) setErr(res.error);
-    else if (res.url) onChange(res.url);
+    if (res.error) {
+      setErr(res.error);
+    } else if (res.url) {
+      onChange(res.url);
+      setDone(true);
+    }
   }
 
   return (
@@ -175,6 +181,11 @@ function ImageField({
           className="w-full border border-neutral-200 rounded px-2 py-1 text-xs text-neutral-600"
         />
         {err ? <p className="text-xs text-red-600">{err}</p> : null}
+        {done && !err ? (
+          <p className="text-xs text-emerald-600">
+            ✓ 업로드됨 — 위 <strong>저장하기</strong>를 눌러야 사이트에 반영됩니다.
+          </p>
+        ) : null}
       </div>
     </div>
   );
@@ -354,11 +365,19 @@ export default function LandingEditor({
   );
   const [pending, startTransition] = useTransition();
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+  const [dirty, setDirty] = useState(false);
+
+  function updateSection(key: string, nv: unknown) {
+    setContent((prev) => ({ ...prev, [key]: nv }));
+    setDirty(true);
+    setStatus(null);
+  }
 
   function save() {
     setStatus(null);
     startTransition(async () => {
       const res = await saveContentAction(content);
+      if (res.ok) setDirty(false);
       setStatus(
         res.ok
           ? { ok: true, msg: "저장되었습니다. 사이트에 즉시 반영됩니다." }
@@ -377,6 +396,9 @@ export default function LandingEditor({
         >
           {pending ? "저장 중…" : "저장하기"}
         </button>
+        {dirty && !pending ? (
+          <span className="text-sm text-amber-600">● 저장되지 않은 변경사항이 있습니다</span>
+        ) : null}
         {status ? (
           <span className={"text-sm " + (status.ok ? "text-emerald-700" : "text-red-600")}>
             {status.msg}
@@ -404,7 +426,7 @@ export default function LandingEditor({
                 fieldKey={key}
                 value={content[key]}
                 adminReady={adminReady}
-                onChange={(nv) => setContent((prev) => ({ ...prev, [key]: nv }))}
+                onChange={(nv) => updateSection(key, nv)}
               />
             </div>
           </details>
