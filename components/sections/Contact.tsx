@@ -76,8 +76,24 @@ export default function Contact({
               {contact.title[1]}
             </h2>
             <p className="ctap">{contact.body}</p>
-            <a className="serif ctatel" href={company.telHref}>
-              {company.tel}
+            <a className="emrg" href={company.telHref}>
+              <span className="emrg-ic">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  aria-hidden="true"
+                >
+                  <path d="M6.5 4h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 4.5 6a2 2 0 0 1 2-2z" />
+                </svg>
+              </span>
+              <span>
+                <span className="emrg-lbl">갑작스러운 상황 · 24시간 긴급 접수</span>
+                <span className="emrg-num serif">{company.tel}</span>
+              </span>
             </a>
           </div>
 

@@ -12,6 +12,8 @@ import Campaign from "@/components/sections/Campaign";
 import Contact from "@/components/sections/Contact";
 import Faq from "@/components/sections/Faq";
 import Footer from "@/components/sections/Footer";
+import MobileCallBar from "@/components/MobileCallBar";
+import FloatingCta from "@/components/FloatingCta";
 import { getContent } from "@/lib/content-store";
 
 // 관리자 편집이 빌드 없이 즉시 반영되도록 요청 시점 렌더(런타임 콘텐츠 조회).
@@ -50,6 +52,8 @@ export default async function Home() {
         <Faq data={c.faq} />
       </main>
       <Footer />
+      <FloatingCta />
+      <MobileCallBar />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
