@@ -35,6 +35,7 @@ const LABELS: Record<string, string> = {
   portrait: "인물 이미지",
   imageAlt: "이미지 대체텍스트",
   portraitAlt: "이미지 대체텍스트",
+  imagePosition: "이미지 위치(예: right center · center · 70% 30%)",
   note: "비고",
   key: "구분",
   tag: "태그",

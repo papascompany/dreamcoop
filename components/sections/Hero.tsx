@@ -16,6 +16,7 @@ export default async function Hero() {
         dark
         priority
         sizes="100vw"
+        objectPosition={hero.imagePosition}
       />
       <div className="hero-ov" style={{ background: heroOverlay }} />
       <div className="hero-in">

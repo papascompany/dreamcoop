@@ -13,6 +13,7 @@ export default function Slot({
   dark = false,
   priority = false,
   sizes,
+  objectPosition,
 }: {
   src?: string | null;
   alt: string;
@@ -20,6 +21,8 @@ export default function Slot({
   dark?: boolean;
   priority?: boolean;
   sizes?: string;
+  /** 크롭 기준(object-position). 예: "right center", "center", "70% 30%". 좁은 화면에서 어느 영역을 보일지 결정. */
+  objectPosition?: string;
 }) {
   if (src) {
     return (
@@ -30,7 +33,7 @@ export default function Slot({
           fill
           priority={priority}
           sizes={sizes ?? "(max-width: 900px) 100vw, 50vw"}
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: "cover", objectPosition: objectPosition || "center" }}
         />
       </div>
     );

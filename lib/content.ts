@@ -41,6 +41,8 @@ export const hero = {
   scrollCue: "아래로 스크롤",
   image: "/images/hero.jpeg",
   imageAlt: "해질녘 바닷가를 함께 걷는 가족의 뒷모습",
+  // 좁은(모바일) 화면에서 이미지가 잘릴 때 어느 영역을 보일지. 현재 이미지는 가족이 우측에 있어 right 기준.
+  imagePosition: "right center",
 } as const;
 
 export const philosophy = {
