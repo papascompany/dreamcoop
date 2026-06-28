@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getContent } from "@/lib/content-store";
 import { SUPABASE_ADMIN_READY } from "@/lib/supabase";
-import { logoutAction } from "@/app/admin/actions";
+import AdminNav from "@/app/admin/AdminNav";
 import LandingEditor from "./LandingEditor";
 
 export const dynamic = "force-dynamic";
@@ -11,26 +11,7 @@ export default async function AdminLandingPage() {
   const content = await getContent();
   return (
     <div className="min-h-screen bg-neutral-100 text-neutral-800">
-      <header className="sticky top-0 z-20 bg-white border-b border-neutral-200">
-        <div className="max-w-4xl mx-auto px-5 py-3 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold">드림상조 · 랜딩관리</span>
-            <a
-              href="/"
-              target="_blank"
-              rel="noreferrer"
-              className="text-xs text-neutral-500 hover:text-neutral-800 underline"
-            >
-              사이트 보기 ↗
-            </a>
-          </div>
-          <form action={logoutAction}>
-            <button className="text-sm text-neutral-500 hover:text-neutral-800">
-              로그아웃
-            </button>
-          </form>
-        </div>
-      </header>
+      <AdminNav active="landing" />
 
       {!SUPABASE_ADMIN_READY ? (
         <div className="max-w-4xl mx-auto px-5 pt-4">

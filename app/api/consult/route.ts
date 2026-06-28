@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { deliverConsult, type ConsultPayload } from "@/lib/notify";
+import { saveConsult } from "@/lib/consults";
 import { contact } from "@/lib/content";
 
 /**
@@ -49,12 +50,21 @@ export async function POST(request: Request) {
   const payload: ConsultPayload = { name, phone, inquiryType, message };
 
   try {
-    await deliverConsult(payload);
-  } catch {
+    // DB 저장(관리자 '상담내역'의 원천) — 가장 중요한 영속화.
+    await saveConsult(payload);
+  } catch (e) {
+    console.error("[consult] 저장 실패", e);
     return NextResponse.json(
       { error: "접수 처리 중 문제가 발생했습니다. 대표전화로 연락 주세요." },
       { status: 500 },
     );
+  }
+
+  // 알림(이메일/웹훅)은 best-effort — 실패해도 접수 자체는 성공으로 처리.
+  try {
+    await deliverConsult(payload);
+  } catch (e) {
+    console.error("[consult] 알림 실패", e);
   }
 
   return NextResponse.json({ ok: true });
