@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0}
+.page{--paper:#EEF0EC;--paper2:#E2E8E2;--card:#F6F8F5;--ink:#28312E;--muted:#5E6B64;--green:#2E3A38;--green2:#3C4A4E;--sand:#A7BEB1;--gold:#7C9A8E;--line:rgba(40,52,48,.14);background:var(--paper);color:var(--ink);font-family:'Noto Sans KR',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.6}
+.serif{font-family:'Noto Serif KR',serif}
+.pen{font-family:'Nanum Pen Script',cursive}
+.container{max-width:1200px;margin:0 auto;padding:0 48px}
+.sec{padding:130px 0;scroll-margin-top:80px}
+.rv{opacity:1}
+@keyframes revealup{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
+@supports (animation-timeline:view){.rv{opacity:0;animation:revealup .9s cubic-bezier(.2,.7,.2,1) both;animation-timeline:view();animation-range:entry 2% cover 26%}}
+image-slot{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important}
+.ebline{display:inline-block;width:38px;height:1px;background:var(--gold)}
+.eyebrow{display:inline-flex;align-items:center;gap:14px;font-size:12.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.h2{font-size:clamp(32px,4.4vw,56px);line-height:1.14;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+.lead{font-size:18px;color:var(--muted);line-height:1.9;max-width:560px}
+.hdr{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:26px 48px;color:#F4EEE2;transition:background .5s,padding .5s,color .5s,box-shadow .5s}
+.hdr.solid{background:rgba(244,238,226,.93);backdrop-filter:blur(14px);color:var(--ink);padding:15px 48px;box-shadow:0 1px 0 var(--line)}
+.brand{display:flex;align-items:center;gap:11px;font-size:20px;font-weight:600;letter-spacing:.01em;color:inherit}
+.bmark{position:relative;width:24px;height:24px;flex:none}
+.bsub{font-size:12.5px;font-weight:400;opacity:.72;letter-spacing:.04em;margin-left:5px}
+.nav{display:flex;align-items:center;gap:34px}
+.navlink{color:inherit;text-decoration:none;font-size:14.5px;font-weight:500;opacity:.9;transition:opacity .2s}
+.navlink:hover{opacity:1}
+.hcta{color:inherit;text-decoration:none;font-size:14px;font-weight:500;border:1px solid currentColor;border-radius:40px;padding:9px 22px;opacity:.92;transition:.25s}
+.hcta:hover{background:var(--gold);border-color:var(--gold);color:#fff;opacity:1}
+.hero{position:relative;height:100vh;min-height:660px;display:flex;align-items:flex-end;overflow:hidden;background:#2E3A38}
+.hero-ov{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(22,27,21,.35) 0%,rgba(22,27,21,.12) 38%,rgba(22,27,21,.62) 100%)}
+.hero-in{position:relative;z-index:2;width:100%;padding-bottom:10vh;color:#F4EEE2}
+.hkick{display:inline-flex;align-items:center;gap:13px;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:rgba(244,238,226,.92);font-weight:500;margin-bottom:26px}
+.hkick .ebline{background:var(--sand)}
+.hh1{font-size:clamp(46px,7.4vw,98px);line-height:1.06;font-weight:600;letter-spacing:-.02em;margin:0;text-shadow:0 2px 40px rgba(0,0,0,.32)}
+.hpen{font-family:'Nanum Pen Script',cursive;font-size:clamp(26px,3vw,38px);color:var(--sand);margin:18px 0 0;text-shadow:0 2px 20px rgba(0,0,0,.3)}
+.scrollcue{display:flex;align-items:center;gap:12px;margin-top:46px;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,238,226,.78)}
+.cuearrow{display:inline-block;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+.phil{background:var(--paper)}
+.philgrid{display:grid;grid-template-columns:1.05fr .95fr;gap:90px;align-items:center}
+.stmt{font-size:clamp(30px,3.6vw,46px);line-height:1.4;font-weight:500;letter-spacing:-.01em}
+.stmt em{font-style:normal;color:var(--gold)}
+.philportrait{position:relative;height:560px;border-radius:3px;overflow:hidden;box-shadow:0 30px 70px -30px rgba(43,40,32,.4)}
+.points{margin-top:120px;display:grid;grid-template-columns:repeat(3,1fr);gap:54px}
+.point{padding-top:28px;border-top:1px solid var(--line)}
+.pnum{font-family:'Noto Serif KR',serif;font-size:30px;color:var(--gold);font-weight:500}
+.pt{font-size:21px;font-weight:600;margin:16px 0 12px}
+.pd{font-size:15.5px;color:var(--muted);line-height:1.85}
+.svcs{background:var(--green);color:#EFE7D7}
+.svcs .eyebrow{color:var(--sand)}
+.svcs .h2{color:#F4EEE2}
+.svcs .lead{color:rgba(239,231,215,.7)}
+.svcgrid{margin-top:64px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.svc{position:relative;height:440px;border-radius:4px;overflow:hidden;background:#222a22;transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s}
+.svc:hover{transform:translateY(-8px);box-shadow:0 36px 60px -28px rgba(0,0,0,.6)}
+.svc-ov{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(20,24,18,.05) 0%,rgba(20,24,18,.3) 48%,rgba(20,24,18,.86) 100%)}
+.svc-body{position:absolute;left:0;right:0;bottom:0;z-index:2;pointer-events:none;padding:30px 26px}
+.svc-tag{display:inline-block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--sand);font-weight:600;margin-bottom:14px}
+.svc-title{font-size:25px;font-weight:600;color:#F7F1E5;margin:0 0 12px}
+.svc-desc{font-size:14px;line-height:1.75;color:rgba(247,241,229,.82);margin:0}
+.band{position:relative;height:78vh;min-height:520px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#2E3A38;text-align:center}
+.band-ov{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(24,36,34,.55),rgba(24,36,34,.62))}
+.band-in{position:relative;z-index:2;color:#F4EEE2;max-width:880px;padding:0 32px}
+.bandq{font-size:clamp(28px,3.6vw,46px);line-height:1.5;font-weight:500;letter-spacing:-.01em}
+.proc{background:var(--paper2)}
+.procTrack{position:relative;max-width:1000px;margin:74px auto 0;padding:20px 24px 40px}
+.spine{position:absolute;left:50%;top:0;bottom:40px;width:2px;background:var(--line);transform:translateX(-50%)}
+.fill{position:absolute;left:50%;top:0;width:2px;background:var(--gold);transform:translateX(-50%);box-shadow:0 0 14px rgba(168,137,90,.5)}
+.prow{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:104px;direction:ltr}
+.prow.right{direction:rtl}
+.pphoto,.ptext{direction:ltr}
+.pphoto{position:relative;height:340px;border-radius:4px;overflow:hidden;box-shadow:0 26px 50px -28px rgba(43,40,32,.45)}
+.ptext{padding:0 10px}
+.pstep{font-size:12.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.pbignum{font-family:'Noto Serif KR',serif;font-size:64px;font-weight:300;color:rgba(168,137,90,.32);line-height:1;margin:-6px 0 8px}
+.ptitle{font-size:27px;font-weight:600;margin:0 0 14px;letter-spacing:-.01em}
+.pdesc{font-size:15.5px;color:var(--muted);line-height:1.9;margin:0;max-width:420px}
+.node{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:4;width:54px;height:54px;border-radius:50%;background:var(--paper2);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'Noto Serif KR',serif;font-size:16px;color:var(--muted);transition:.5s}
+.node.on{background:var(--gold);border-color:var(--gold);color:#fff;box-shadow:0 0 0 8px rgba(168,137,90,.16),0 12px 30px -8px rgba(168,137,90,.6)}
+.coop{background:var(--card)}
+.coopgrid{display:grid;grid-template-columns:.92fr 1.08fr;gap:88px;align-items:center}
+.coopvis{position:relative;height:520px;border-radius:3px;overflow:hidden;box-shadow:0 30px 70px -34px rgba(43,40,32,.4)}
+.stats{margin-top:86px;display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+.stat{text-align:center;padding:34px 16px;border-radius:4px;background:var(--paper)}
+.statnum{font-family:'Noto Serif KR',serif;font-size:clamp(34px,3.4vw,46px);font-weight:600;color:var(--green2);letter-spacing:-.01em}
+.statl{font-size:14px;color:var(--muted);margin-top:8px}
+.cta{background:var(--green);color:#EFE7D7}
+.cta .eyebrow{color:var(--sand)}
+.ctagrid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.ctah{font-size:clamp(30px,3.6vw,46px);line-height:1.32;font-weight:600;color:#F4EEE2;letter-spacing:-.01em}
+.ctap{font-size:16px;color:rgba(239,231,215,.72);line-height:1.9;margin-top:24px}
+.form{background:var(--card);border-radius:6px;padding:40px;color:var(--ink)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.field{margin-bottom:18px}
+.flbl{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-bottom:9px}
+.inp{width:100%;border:1px solid var(--line);background:var(--paper);border-radius:4px;padding:14px 16px;font-family:inherit;font-size:15px;color:var(--ink);transition:border-color .2s}
+.inp:focus{outline:none;border-color:var(--gold)}
+textarea.inp{resize:vertical;min-height:110px}
+.submit{width:100%;border:0;background:var(--gold);color:#fff;font-family:inherit;font-size:16px;font-weight:600;padding:17px;border-radius:4px;cursor:pointer;transition:background .25s;margin-top:6px}
+.submit:hover{background:var(--green2)}
+.sent{text-align:center;padding:60px 30px}
+.sentmark{font-size:42px;color:var(--gold)}
+.senth{font-size:24px;font-weight:600;margin:18px 0 10px;font-family:'Noto Serif KR',serif}
+.sentp{color:var(--muted);font-size:15px}
+.faqsec{background:var(--paper)}
+.faqlist{max-width:820px;margin:60px auto 0}
+.faqItem{border-bottom:1px solid var(--line)}
+.faqQ{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px 6px;cursor:pointer;font-size:18.5px;font-weight:500;color:var(--ink);transition:color .2s}
+.faqQ:hover{color:var(--gold)}
+.faqsign{flex:none;font-size:24px;color:var(--gold);transition:transform .35s;font-weight:300}
+.faqItem.open .faqsign{transform:rotate(45deg)}
+.faqA{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.2,.7,.2,1)}
+.faqItem.open .faqA{max-height:240px}
+.faqAin{padding:0 6px 30px;font-size:15.5px;color:var(--muted);line-height:1.9;max-width:680px}
+.ft{background:var(--green);color:rgba(239,231,215,.78);padding:80px 0 40px}
+.ftgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px;padding-bottom:54px;border-bottom:1px solid rgba(239,231,215,.16)}
+.ftbrand{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:600;color:#F4EEE2;margin-bottom:20px}
+.ftp{font-size:14.5px;line-height:1.85;max-width:340px}
+.fthd{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--sand);font-weight:600;margin-bottom:18px}
+.ftlink{display:block;color:rgba(239,231,215,.8);text-decoration:none;font-size:14.5px;margin-bottom:12px;transition:color .2s}
+.ftlink:hover{color:#F4EEE2}
+.fttel{font-family:'Noto Serif KR',serif;font-size:26px;color:#F4EEE2;font-weight:500;margin-bottom:8px}
+.ftbot{display:flex;justify-content:space-between;align-items:center;padding-top:30px;font-size:13px;color:rgba(239,231,215,.5);flex-wrap:wrap;gap:12px}
+@media(max-width:900px){.container{padding:0 26px}.hdr{padding:18px 24px}.hdr .nav .navlink{display:none}.philgrid,.coopgrid,.ctagrid{grid-template-columns:1fr;gap:44px}.philportrait,.coopvis{height:380px}.points{grid-template-columns:1fr;gap:34px;margin-top:64px}.svcgrid{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr;gap:16px}.prow{grid-template-columns:1fr;gap:22px;direction:ltr!important;margin-bottom:64px;padding-left:38px}.prow.right{direction:ltr}.spine,.fill{left:14px}.node{left:14px;width:42px;height:42px;font-size:14px}.pphoto{height:240px}.frow{grid-template-columns:1fr}.sec{padding:88px 0}}
+</style>
+<script src="./image-slot.js"></script>
+</helmet>
+<div class="page" style="{{ rootStyle }}">
+<header class="hdr {{ hdrExtra }}">
+<a href="#top" class="brand"><svg class="bmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21c0-5 4-7 4-11a4 4 0 0 0-8 0c0 4 4 6 4 11z"/><circle cx="12" cy="9.5" r="1.6" fill="currentColor" stroke="none"/></svg><span class="serif">드림상조<span class="bsub">협동조합</span></span></a>
+<nav class="nav"><a class="navlink" href="#philosophy">철학</a><a class="navlink" href="#services">서비스</a><a class="navlink" href="#process">진행 절차</a><a class="navlink" href="#coop">협동조합</a><a class="hcta" href="#contact">상담 신청</a></nav>
+</header>
+<section class="hero" id="top">
+<image-slot id="dreamHero" placeholder="히어로 이미지 — 새벽 하늘·고요한 자연 풍경을 권합니다" class="slotfill"></image-slot>
+<div class="hero-ov" style="{{ heroOvStyle }}"></div>
+<div class="hero-in"><div class="container">
+<div class="hkick"><span class="ebline"></span>드림상조협동조합</div>
+<h1 class="serif hh1">마지막 길을,<br>가장 따뜻하게</h1>
+<p class="hpen">사람을, 사람답게 배웅합니다</p>
+<div class="scrollcue">아래로 스크롤<span class="cuearrow">↓</span></div>
+</div></div>
+</section>
+<section class="sec phil" id="philosophy">
+<div class="container">
+<div class="philgrid">
+<div class="rv" data-reveal>
+<div class="eyebrow" style="margin-bottom:30px"><span class="ebline"></span>우리의 철학</div>
+<p class="serif stmt">상조는 <em>금융상품</em>이 아닙니다.<br>마지막 길은 비용이 아니라,<br><em>정성</em>으로 채워야 합니다.</p>
+<p class="lead" style="margin-top:34px">대부분의 상조는 매달 돈을 내는 보험이 되었습니다. 드림상조협동조합은 다릅니다. 우리는 고인을 정중하고 고결하게 배웅하고, 남겨진 가족이 따뜻한 추억을 오래 간직할 수 있도록 곁을 지킵니다.</p>
+</div>
+<div class="philportrait rv" data-reveal>
+<image-slot id="philPortrait" placeholder="가족·손을 맞잡은 따뜻한 순간" class="slotfill"></image-slot>
+</div>
+</div>
+<div class="points">
+<sc-for list="{{ points }}" as="pt" hint-placeholder-count="3">
+<div class="point rv" data-reveal><div class="pnum serif">{{ pt.n }}</div><h3 class="pt">{{ pt.t }}</h3><p class="pd">{{ pt.d }}</p></div>
+</sc-for>
+</div>
+</div>
+</section>
+<section class="sec svcs" id="services">
+<div class="container">
+<div class="rv" data-reveal style="max-width:680px">
+<div class="eyebrow" style="margin-bottom:26px"><span class="ebline"></span>서비스</div>
+<h2 class="serif h2">한 사람의 삶을<br>온전히 배웅하는 일</h2>
+<p class="lead" style="margin-top:26px">처음 연락이 닿는 순간부터 마지막 추모까지, 모든 과정을 정성껏 함께합니다.</p>
+</div>
+<div class="svcgrid">
+<sc-for list="{{ services }}" as="svc" hint-placeholder-count="4">
+<div class="svc rv" data-reveal>
+<image-slot id="{{ svc.slot }}" placeholder="서비스 이미지" class="slotfill"></image-slot>
+<div class="svc-ov"></div>
+<div class="svc-body"><span class="svc-tag">{{ svc.tag }}</span><h3 class="serif svc-title">{{ svc.t }}</h3><p class="svc-desc">{{ svc.d }}</p></div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+<section class="band">
+<image-slot id="bandImg" placeholder="잔잔한 자연·빛 이미지를 드롭하세요" class="slotfill"></image-slot>
+<div class="band-ov"></div>
+<div class="band-in"><p class="serif bandq">“떠나는 이의 품격은,<br>남겨진 이의 위로가 됩니다.”</p><p class="pen" style="font-size:30px;color:var(--sand);margin-top:24px">— 드림상조협동조합</p></div>
+</section>
+<section class="sec proc" id="process">
+<div class="container">
+<div class="rv" data-reveal style="text-align:center;max-width:640px;margin:0 auto">
+<div class="eyebrow" style="margin-bottom:24px"><span class="ebline"></span>진행 절차</div>
+<h2 class="serif h2">처음부터 끝까지,<br>함께 걷는 여섯 걸음</h2>
+<p class="lead" style="margin:24px auto 0">스크롤을 따라 한 걸음씩, 우리가 곁에서 함께하는 모든 순간을 안내합니다.</p>
+</div>
+<div class="procTrack" id="procTrack">
+<div class="spine"></div>
+<div class="fill" style="{{ fillStyle }}"></div>
+<sc-for list="{{ steps }}" as="step" hint-placeholder-count="6">
+<div class="prow rv {{ step.side }}" data-reveal>
+<div class="pphoto"><image-slot id="{{ step.slot }}" placeholder="단계 이미지" class="slotfill"></image-slot></div>
+<div class="ptext"><div class="pstep">Step {{ step.num }}</div><div class="pbignum">{{ step.num }}</div><h3 class="serif ptitle">{{ step.t }}</h3><p class="pdesc">{{ step.d }}</p></div>
+<div class="node {{ step.state }}">{{ step.num }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+<section class="sec coop" id="coop">
+<div class="container">
+<div class="coopgrid">
+<div class="coopvis rv" data-reveal>
+<image-slot id="coopImg" placeholder="조합·사람들이 함께하는 이미지" class="slotfill"></image-slot>
+</div>
+<div class="rv" data-reveal>
+<div class="eyebrow" style="margin-bottom:26px"><span class="ebline"></span>협동조합이라는 약속</div>
+<h2 class="serif h2">이익이 아니라<br>사람을 위해</h2>
+<p class="lead" style="margin-top:26px">드림상조는 조합원이 함께 만들고 운영하는 비영리 협동조합입니다. 회사의 수익이 아니라 조합원과 가족의 마음을 가장 먼저 생각합니다. 쓰지 않은 비용은 사라지지 않고, 모든 운영은 투명하게 공개됩니다.</p>
+</div>
+</div>
+<div class="stats">
+<sc-for list="{{ stats }}" as="st" hint-placeholder-count="4">
+<div class="stat rv" data-reveal><div class="statnum serif">{{ st.n }}</div><div class="statl">{{ st.l }}</div></div>
+</sc-for>
+</div>
+</div>
+</section>
+<section class="sec cta" id="contact">
+<div class="container">
+<div class="ctagrid">
+<div class="rv" data-reveal>
+<div class="eyebrow" style="margin-bottom:26px"><span class="ebline"></span>사전 상담 · 가입 문의</div>
+<h2 class="serif ctah">마지막을 미리 준비하는 것은,<br>남겨질 가족을 위한 배려입니다.</h2>
+<p class="ctap">부담 없이 문의해 주세요. 가입 의무 없이, 조합의 취지와 진행 방식을 충분히 안내해 드립니다. 갑작스러운 상황이라면 24시간 대표전화로 연락 주세요.</p>
+<p class="serif" style="font-size:30px;color:var(--sand);margin-top:30px;font-weight:500">1668-0000</p>
+</div>
+<div class="rv" data-reveal>
+<sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+<div class="form sent"><div class="sentmark">✓</div><h3 class="senth">상담 신청이 접수되었습니다</h3><p class="sentp">빠른 시일 내에 정성껏 연락드리겠습니다.<br>편안한 마음으로 기다려 주세요.</p></div>
+</sc-if>
+<sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+<form class="form" onSubmit="{{ onSubmit }}">
+<div class="frow"><div class="field"><label class="flbl">성함</label><input class="inp" required placeholder="이름을 입력해 주세요"></div><div class="field"><label class="flbl">연락처</label><input class="inp" required placeholder="010-0000-0000"></div></div>
+<div class="field"><label class="flbl">문의 유형</label><select class="inp"><option>사전 상담 · 가입 문의</option><option>장례 접수 (긴급)</option><option>기타 문의</option></select></div>
+<div class="field"><label class="flbl">남기실 말씀</label><textarea class="inp" placeholder="궁금하신 점이나 상황을 자유롭게 적어 주세요"></textarea></div>
+<button class="submit" type="submit">정중히 상담 신청하기</button>
+</form>
+</sc-if>
+</div>
+</div>
+</div>
+</section>
+<section class="sec faqsec">
+<div class="container">
+<div class="rv" data-reveal style="text-align:center"><div class="eyebrow" style="margin-bottom:22px"><span class="ebline"></span>자주 묻는 질문</div><h2 class="serif h2">궁금한 점이 있으신가요</h2></div>
+<div class="faqlist">
+<sc-for list="{{ faqs }}" as="faq" hint-placeholder-count="5">
+<div class="faqItem {{ faq.state }} rv" data-reveal>
+<div class="faqQ" onClick="{{ faq.onToggle }}">{{ faq.q }}<span class="faqsign">+</span></div>
+<div class="faqA"><div class="faqAin">{{ faq.a }}</div></div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+<footer class="ft">
+<div class="container">
+<div class="ftgrid">
+<div><div class="ftbrand"><svg class="bmark" style="width:26px;height:26px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21c0-5 4-7 4-11a4 4 0 0 0-8 0c0 4 4 6 4 11z"/><circle cx="12" cy="9.5" r="1.6" fill="currentColor" stroke="none"/></svg>드림상조협동조합</div><p class="ftp">고인의 길을 정중하고 고결하게 배웅하고, 가족이 따뜻한 추억을 기억할 수 있도록. 사람을 위한 비영리 상조 협동조합입니다.</p></div>
+<div><div class="fthd">바로가기</div><a class="ftlink" href="#philosophy">우리의 철학</a><a class="ftlink" href="#services">서비스</a><a class="ftlink" href="#process">진행 절차</a><a class="ftlink" href="#coop">협동조합 안내</a></div>
+<div><div class="fthd">24시간 상담</div><div class="fttel serif">1668-0000</div><a class="ftlink" href="#contact">온라인 상담 신청</a><p class="ftp" style="font-size:13px;margin-top:14px">서울특별시 ○○구 ○○로 00<br>사업자등록번호 000-00-00000</p></div>
+</div>
+<div class="ftbot"><span>© 2026 드림상조협동조합. All rights reserved.</span><span>개인정보처리방침 · 이용약관</span></div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#7C9A8E&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#7C9A8E&quot;,&quot;#3C4A4E&quot;,&quot;#C3D0C8&quot;],&quot;section&quot;:&quot;테마&quot;},&quot;overlay&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.45,&quot;min&quot;:0.2,&quot;max&quot;:0.8,&quot;step&quot;:0.05,&quot;tsType&quot;:&quot;number&quot;,&quot;unit&quot;:&quot;&quot;,&quot;section&quot;:&quot;히어로&quot;}}">
+class Component extends DCLogic {
+  state = { scrolled:false, prog:0, faq:0, sent:false };
+  STEPS = [
+    {t:'임종 · 접수', d:'24시간 언제든 한 통의 전화로. 전문 장례지도사가 곧바로 도착해 고인을 정중히 모십니다.'},
+    {t:'빈소 · 의전 준비', d:'품격 있는 빈소와 영정·제단을 정성껏 마련하고, 조문 절차를 세심히 안내해 드립니다.'},
+    {t:'입관 · 성복', d:'염습과 입관, 성복례까지. 고인을 단정히 모시는 모든 과정을 가족과 함께합니다.'},
+    {t:'발인 · 운구', d:'마지막 인사를 나누는 발인제와 정중한 운구로, 떠나는 길을 끝까지 배웅합니다.'},
+    {t:'화장 · 안치', d:'화장과 안치 또는 매장까지, 고인이 편히 머무실 자리를 정성을 다해 살핍니다.'},
+    {t:'추모 · 기억', d:'49재와 추모 공간, 기록으로 고인의 삶을 오래도록 기억할 수 있도록 곁을 지킵니다.'},
+  ];
+  SERVICES = [
+    {tag:'의전', t:'장례 의전', d:'전 과정에 전문 장례지도사가 동행하여, 형식이 아닌 마음으로 모십니다.'},
+    {tag:'공간', t:'빈소 · 추모 공간', d:'고인의 삶을 닮은 품격 있는 공간을 정성껏 연출합니다.'},
+    {tag:'운구', t:'운구 · 발인', d:'마지막 한 걸음까지 정중하게. 떠나는 길을 함께 걷습니다.'},
+    {tag:'기억', t:'추모 · 기억 보관', d:'사진과 글로 고인의 삶을 기록하여 가족의 곁에 남깁니다.'},
+  ];
+  POINTS = [
+    {n:'01', t:'조합원이 주인입니다', d:'드림상조는 비영리 협동조합입니다. 회사의 이익이 아니라, 조합원과 가족을 위해 운영됩니다.'},
+    {n:'02', t:'강매 없는 투명함', d:'불필요한 부가상품과 숨은 비용 없이, 꼭 필요한 것만 정직하게 안내합니다.'},
+    {n:'03', t:'사람을 위한 의전', d:'정해진 절차를 넘어, 고인을 한 사람으로서 고결하게 배웅합니다.'},
+  ];
+  STATS = [
+    {n:'12,000+', l:'함께하는 조합원'},
+    {n:'8,400회', l:'정성껏 모신 배웅'},
+    {n:'98%', l:'가족 만족도'},
+    {n:'24시간', l:'언제든 상담'},
+  ];
+  FAQ = [
+    {q:'조합 가입은 어떻게 하나요?', a:'온라인 상담 신청 또는 대표전화 한 통이면 충분합니다. 조합의 취지와 운영 방식을 충분히 안내해 드린 뒤, 부담 없이 결정하실 수 있습니다.'},
+    {q:'매월 내는 비용이 있나요?', a:'기존 상조의 보험형 월 납입과 달리, 드림상조는 조합 출자와 실비 기반으로 운영됩니다. 쓰지 않은 비용이 사라지지 않습니다.'},
+    {q:'갑작스러운 상황에도 도움받을 수 있나요?', a:'네. 24시간 언제든 연락 주시면 전문 장례지도사가 즉시 출동하여, 처음부터 끝까지 곁에서 함께합니다.'},
+    {q:'서비스 가능한 지역은 어디까지인가요?', a:'전국 주요 지역에서 의전이 가능하며, 지역별 협력 빈소와 연계해 어디서나 동일한 품질로 모십니다.'},
+    {q:'가입하지 않아도 상담이 가능한가요?', a:'물론입니다. 미리 준비하는 사전 상담은 누구에게나 열려 있으며, 어떠한 가입 의무도 없습니다.'},
+  ];
+  componentDidMount(){
+    this._onScroll = () => { if (this._raf) return; this._raf = requestAnimationFrame(() => { this._raf = null; this._measure(); }); };
+    window.addEventListener('scroll', this._onScroll, { passive:true });
+    window.addEventListener('resize', this._onScroll, { passive:true });
+    requestAnimationFrame(() => this._measure());
+  }
+  componentWillUnmount(){
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('resize', this._onScroll);
+  }
+  _measure(){
+    const scrolled = window.scrollY > 40;
+    let prog = 0;
+    const tl = document.getElementById('procTrack');
+    if (tl) {
+      const r = tl.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const start = vh * 0.6;
+      prog = Math.max(0, Math.min(1, (start - r.top) / Math.max(1, r.height - vh * 0.2)));
+    }
+    if (scrolled !== this.state.scrolled || Math.abs(prog - this.state.prog) > 0.004) {
+      this.setState({ scrolled, prog });
+    }
+  }
+  renderVals(){
+    const accent = this.props.accent || '#7C9A8E';
+    const ov = this.props.overlay == null ? 0.45 : this.props.overlay;
+    const prog = this.state.prog, n = this.STEPS.length;
+    const steps = this.STEPS.map((s, i) => {
+      const active = prog >= (i / (n - 1)) - 0.06;
+      return { num: String(i + 1).padStart(2, '0'), t: s.t, d: s.d, slot: 'procImg' + i, side: (i % 2 ? 'right' : 'left'), state: active ? 'on' : '' };
+    });
+    const services = this.SERVICES.map((s, i) => ({ tag: s.tag, t: s.t, d: s.d, slot: 'svcImg' + i }));
+    const faqs = this.FAQ.map((f, i) => ({ q: f.q, a: f.a, state: this.state.faq === i ? 'open' : '', onToggle: () => this.setState(st => ({ faq: st.faq === i ? -1 : i })) }));
+    return {
+      rootStyle: { '--gold': accent },
+      heroOvStyle: { background: 'linear-gradient(180deg,rgba(28,40,38,' + (ov * 0.78).toFixed(3) + ') 0%,rgba(28,40,38,' + (ov * 0.28).toFixed(3) + ') 38%,rgba(28,40,38,' + Math.min(0.92, ov + 0.16).toFixed(3) + ') 100%)' },
+      hdrExtra: this.state.scrolled ? 'solid' : '',
+      fillStyle: { height: (prog * 100).toFixed(2) + '%' },
+      steps, services,
+      points: this.POINTS,
+      stats: this.STATS,
+      faqs,
+      sent: this.state.sent,
+      notSent: !this.state.sent,
+      onSubmit: (e) => { e.preventDefault(); this.setState({ sent: true }); },
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+.serif{font-family:'Noto Serif KR',serif}
+.pen{font-family:'Nanum Pen Script',cursive}
+.seclabel{font-family:'Noto Serif KR',serif;font-size:27px;font-weight:600;color:#3a332a}
+.secsub{font-family:'Noto Sans KR',sans-serif;font-size:14px;color:rgba(58,51,42,.62);margin-top:7px;font-weight:400}
+.flabel{position:absolute;top:-30px;left:2px;font:500 13.5px/1 'Noto Sans KR',sans-serif;color:rgba(50,44,34,.72);letter-spacing:.01em}
+.fmeta{font-weight:400;color:rgba(50,44,34,.5)}
+.card{position:relative;width:100%;height:100%;border-radius:5px;box-shadow:0 18px 50px -16px rgba(40,34,24,.32);overflow:hidden;background:#fff;font-family:'Noto Sans KR',sans-serif}
+.ebl{display:inline-block;width:34px;height:1px;background:currentColor}
+/* HERO A — full-bleed, bottom anchored */
+.haBg{position:absolute;inset:0;background:radial-gradient(120% 95% at 26% 16%,rgba(214,186,132,.5),transparent 48%),linear-gradient(180deg,#4c5d47 0%,#37443a 44%,#202820 100%)}
+.haOv{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,26,20,.08),rgba(20,26,20,.5))}
+.hHeader{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;justify-content:space-between;align-items:center;padding:26px 46px;color:#F4EEE2}
+.hbrand{font-size:21px;font-weight:600;letter-spacing:.01em}
+.hnav{font-size:13px;letter-spacing:.05em;color:rgba(244,238,226,.82)}
+.haBody{position:absolute;left:46px;bottom:54px;z-index:3;color:#F4EEE2}
+.heyebrow{display:flex;align-items:center;gap:13px;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#D9BE88;font-weight:500;margin-bottom:22px}
+.haTitle{font-size:76px;line-height:1.04;font-weight:600;letter-spacing:-.02em;margin:0;text-shadow:0 2px 34px rgba(0,0,0,.32)}
+.haPen{font-size:32px;color:#D9BE88;margin-top:14px}
+.hscroll{position:absolute;right:46px;bottom:56px;z-index:3;color:rgba(244,238,226,.7);font-size:12px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+/* HERO B — centered, stat badges */
+.hbBg{position:absolute;inset:0;background:radial-gradient(110% 85% at 50% 10%,rgba(214,176,138,.45),transparent 52%),linear-gradient(180deg,#d2c1ad 0%,#ad9379 52%,#6f5d4e 100%)}
+.hbOv{position:absolute;inset:0;background:linear-gradient(180deg,rgba(42,34,28,.14),rgba(42,34,28,.44))}
+.hbBody{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#FBF7EF;padding:0 40px}
+.hbKick{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:rgba(251,247,239,.88);margin-bottom:20px}
+.hbTitle{font-family:'Noto Serif KR',serif;font-size:72px;line-height:1.03;font-weight:600;margin:0;letter-spacing:-.02em;text-shadow:0 2px 32px rgba(0,0,0,.26)}
+.hbCta{margin-top:36px;display:inline-flex;align-items:center;gap:12px;background:rgba(251,247,239,.94);color:#3A332C;font-size:15px;font-weight:600;padding:15px 32px;border-radius:44px}
+.hbBadges{position:absolute;top:28px;right:28px;z-index:4;display:flex;flex-direction:column;gap:12px}
+.badge{background:rgba(251,247,239,.15);backdrop-filter:blur(10px);border:1px solid rgba(251,247,239,.32);border-radius:16px;padding:14px 18px;color:#FBF7EF;min-width:128px}
+.badge b{font-family:'Noto Serif KR',serif;font-size:25px;font-weight:600;display:block;line-height:1.1}
+.badge span{font-size:11.5px;opacity:.86;letter-spacing:.02em}
+.hbHeader{position:absolute;top:30px;left:34px;z-index:4;color:#FBF7EF;font-family:'Noto Serif KR',serif;font-size:20px;font-weight:600}
+/* HERO C — split panel + photo */
+.hcWrap{position:absolute;inset:0;display:grid;grid-template-columns:.92fr 1.08fr}
+.hcLeft{position:relative;background:#2E3A38;color:#EEF0EC;display:flex;flex-direction:column;justify-content:center;padding:0 58px;z-index:2}
+.hcRight{position:relative;background:radial-gradient(92% 72% at 62% 28%,rgba(170,190,178,.55),transparent 60%),linear-gradient(165deg,#85a294 0%,#4a5b5b 60%,#33403f 100%)}
+.hcBrand{position:absolute;top:30px;left:58px;z-index:3;font-family:'Noto Serif KR',serif;font-size:20px;font-weight:600;color:#EEF0EC}
+.hcKick{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#A8C0B2;font-weight:500;margin-bottom:20px}
+.hcTitle{font-family:'Noto Serif KR',serif;font-size:58px;line-height:1.08;font-weight:600;margin:0;letter-spacing:-.02em}
+.hcLead{font-size:15px;line-height:1.85;color:rgba(238,240,236,.74);margin:24px 0 32px;max-width:330px}
+.hcCta{align-self:flex-start;border:1px solid rgba(238,240,236,.55);color:#EEF0EC;font-size:14px;font-weight:500;padding:13px 28px;border-radius:44px}
+.hcPen{position:absolute;right:34px;bottom:34px;z-index:3;font-family:'Nanum Pen Script',cursive;font-size:30px;color:rgba(238,240,236,.9)}
+/* PALETTE CARDS */
+.palcard{position:relative;width:100%;height:100%;background:#fff;border-radius:5px;box-shadow:0 18px 50px -16px rgba(40,34,24,.3);overflow:hidden;display:grid;grid-template-columns:1fr 1fr}
+.palinfo{padding:34px 32px;display:flex;flex-direction:column}
+.palname{font-family:'Noto Serif KR',serif;font-size:25px;font-weight:600;color:#2b2820}
+.palmood{font-size:13.5px;color:#8a8170;margin-top:6px}
+.swatches{display:flex;margin-top:auto;border-radius:10px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
+.sw{flex:1;height:88px}
+.swlabels{display:flex;margin-top:11px}
+.swl{flex:1;font-size:10px;color:#9a9180;text-align:center;letter-spacing:.02em}
+.palsample{position:relative;display:flex;flex-direction:column;justify-content:center;padding:34px 30px}
+.psEy{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;margin-bottom:16px}
+.psTitle{font-family:'Noto Serif KR',serif;font-size:30px;line-height:1.18;font-weight:600;margin:0;letter-spacing:-.01em}
+.psPen{font-family:'Nanum Pen Script',cursive;font-size:24px;margin-top:14px}
+.psTag{margin-top:20px;align-self:flex-start;font-size:12px;font-weight:600;padding:8px 16px;border-radius:30px}
+.note{background:#FBEFA6;padding:18px 20px;font:14px/1.55 'Noto Sans KR',sans-serif;color:#4a4326;box-shadow:0 8px 24px -8px rgba(40,34,24,.3);transform:rotate(-1deg);border-radius:2px}
+.note b{font-weight:700}
+</style>
+</helmet>
+<div class="seclabel" style="position:absolute;left:80px;top:34px">히어로 레이아웃 · 3안<div class="secsub">동일한 사진 기반 철학을 세 가지 구성으로 — 레이아웃과 컬러는 자유롭게 조합하실 수 있습니다.</div></div>
+<div style="position:absolute;left:80px;top:150px;width:1080px;height:600px">
+<div class="flabel" data-drags-parent="1">A안 · 풀블리드 하단 정렬 <span class="fmeta">— 현재 적용안 / 이브리 & 포레스트</span></div>
+<div class="card"><div class="haBg"></div><div class="haOv"></div>
+<div class="hHeader"><div class="hbrand serif">드림상조</div><div class="hnav">철학 · 서비스 · 진행절차 · 상담 신청</div></div>
+<div class="haBody"><div class="heyebrow"><span class="ebl"></span>드림상조협동조합</div><h1 class="serif haTitle">마지막 길을,<br>가장 따뜻하게</h1><div class="pen haPen">사람을, 사람답게 배웅합니다</div></div>
+<div class="hscroll">아래로 스크롤 ↓</div>
+</div></div>
+<div style="position:absolute;left:1320px;top:150px;width:1080px;height:600px">
+<div class="flabel" data-drags-parent="1">B안 · 중앙 정렬 + 신뢰 지표 <span class="fmeta">— 웜 그레이 & 클레이</span></div>
+<div class="card"><div class="hbBg"></div><div class="hbOv"></div>
+<div class="hbHeader serif">드림상조</div>
+<div class="hbBadges"><div class="badge"><b>24시간</b><span>언제든 상담</span></div><div class="badge"><b>8,400회</b><span>정성껏 모신 배웅</span></div><div class="badge"><b>98%</b><span>가족 만족도</span></div></div>
+<div class="hbBody"><div class="hbKick">드림상조협동조합</div><h1 class="hbTitle">고결한 마지막,<br>따뜻한 기억</h1><div class="hbCta">상담 신청하기 →</div></div>
+</div></div>
+<div style="position:absolute;left:2560px;top:150px;width:1080px;height:600px">
+<div class="flabel" data-drags-parent="1">C안 · 좌측 텍스트 패널 분할 <span class="fmeta">— 미스트 & 세이지</span></div>
+<div class="card"><div class="hcWrap"><div class="hcLeft"><div class="hcKick"><span class="ebl"></span>드림상조협동조합</div><h1 class="hcTitle">한 사람의 삶을<br>온전히 배웅합니다</h1><p class="hcLead">매월 내는 금융상품이 아닌, 고인을 고결하게 모시고 가족의 추억을 지키는 비영리 상조 협동조합입니다.</p><div class="hcCta">우리의 철학 보기 →</div></div><div class="hcRight"><div class="hcPen pen">고요히, 정중히</div></div></div>
+<div class="hcBrand">드림상조</div>
+</div></div>
+<div class="seclabel" style="position:absolute;left:80px;top:880px">컬러 시스템 · 3안<div class="secsub">참고 이미지의 따뜻하고 차분한 분위기에서 도출한 세 가지 팔레트입니다.</div></div>
+<div style="position:absolute;left:80px;top:996px;width:1080px;height:340px">
+<div class="flabel" data-drags-parent="1">팔레트 1 <span class="fmeta">— 현재 적용</span></div>
+<div class="palcard"><div class="palinfo"><div class="palname">이브리 &amp; 포레스트</div><div class="palmood">자연 · 평온 · 깊은 위로</div>
+<div class="swatches"><div class="sw" style="background:#F4EEE2"></div><div class="sw" style="background:#C7AB7B"></div><div class="sw" style="background:#A8895A"></div><div class="sw" style="background:#36433A"></div><div class="sw" style="background:#222A22"></div></div>
+<div class="swlabels"><div class="swl">#F4EEE2</div><div class="swl">#C7AB7B</div><div class="swl">#A8895A</div><div class="swl">#36433A</div><div class="swl">#222A22</div></div></div>
+<div class="palsample" style="background:#F4EEE2"><div class="psEy" style="color:#A8895A"><span class="ebl"></span>드림상조협동조합</div><h3 class="psTitle" style="color:#2b2820">마지막 길을,<br>가장 따뜻하게</h3><div class="psPen" style="color:#A8895A">사람답게 배웅합니다</div><div class="psTag" style="background:#36433A;color:#F4EEE2">상담 신청</div></div>
+</div></div>
+<div style="position:absolute;left:1320px;top:996px;width:1080px;height:340px">
+<div class="flabel" data-drags-parent="1">팔레트 2</div>
+<div class="palcard"><div class="palinfo"><div class="palname">웜 그레이 &amp; 클레이</div><div class="palmood">정갈 · 단정 · 따뜻한 흙빛</div>
+<div class="swatches"><div class="sw" style="background:#EFE9E0"></div><div class="sw" style="background:#CDBBA6"></div><div class="sw" style="background:#B07A52"></div><div class="sw" style="background:#4A4039"></div><div class="sw" style="background:#2B2521"></div></div>
+<div class="swlabels"><div class="swl">#EFE9E0</div><div class="swl">#CDBBA6</div><div class="swl">#B07A52</div><div class="swl">#4A4039</div><div class="swl">#2B2521</div></div></div>
+<div class="palsample" style="background:#EFE9E0"><div class="psEy" style="color:#B07A52"><span class="ebl"></span>드림상조협동조합</div><h3 class="psTitle" style="color:#2B2521">고결한 마지막,<br>따뜻한 기억</h3><div class="psPen" style="color:#B07A52">사람답게 배웅합니다</div><div class="psTag" style="background:#4A4039;color:#EFE9E0">상담 신청</div></div>
+</div></div>
+<div style="position:absolute;left:2560px;top:996px;width:1080px;height:340px">
+<div class="flabel" data-drags-parent="1">팔레트 3</div>
+<div class="palcard"><div class="palinfo"><div class="palname">미스트 &amp; 세이지</div><div class="palmood">고요 · 고결 · 맑은 평온</div>
+<div class="swatches"><div class="sw" style="background:#EEF0EC"></div><div class="sw" style="background:#C3D0C8"></div><div class="sw" style="background:#7C9A8E"></div><div class="sw" style="background:#3C4A4E"></div><div class="sw" style="background:#2E3A38"></div></div>
+<div class="swlabels"><div class="swl">#EEF0EC</div><div class="swl">#C3D0C8</div><div class="swl">#7C9A8E</div><div class="swl">#3C4A4E</div><div class="swl">#2E3A38</div></div></div>
+<div class="palsample" style="background:#EEF0EC"><div class="psEy" style="color:#7C9A8E"><span class="ebl"></span>드림상조협동조합</div><h3 class="psTitle" style="color:#2E3A38">한 사람의 삶을<br>온전히 배웅합니다</h3><div class="psPen" style="color:#7C9A8E">고요히, 정중히</div><div class="psTag" style="background:#3C4A4E;color:#EEF0EC">상담 신청</div></div>
+</div></div>
+<div class="note" style="position:absolute;left:80px;top:1410px;width:440px">레이아웃(A·B·C)과 팔레트(1·2·3)는 <b>자유롭게 조합</b> 가능합니다. 마음에 드는 조합을 알려주시면 본 페이지에 바로 적용해 드릴게요. 사진은 모두 실사 이미지로 교체됩니다.</div>
+</x-dc>
+</body>
+</html>
