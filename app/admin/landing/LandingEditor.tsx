@@ -68,14 +68,17 @@ const LABELS: Record<string, string> = {
   id: "ID",
 };
 
-function labelFor(key: string): string {
-  if (!key) return "";
+type Path = (string | number)[];
+type SetAt = (path: Path, value: unknown | ((cur: unknown) => unknown)) => void;
+
+function labelFor(key: string | number): string {
+  if (key === "" || typeof key === "number") return "";
   return LABELS[key] ?? key;
 }
 function isObj(v: unknown): v is Record<string, unknown> {
   return Boolean(v) && typeof v === "object" && !Array.isArray(v);
 }
-function isImageKey(key: string): boolean {
+function isImageKey(key: string | number): boolean {
   return key === "image" || key === "portrait";
 }
 function isLongText(v: string): boolean {
@@ -92,19 +95,26 @@ function blankLike(template: unknown): unknown {
   return template;
 }
 
-function Row({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="block">
-      {label ? (
-        <span className="block text-xs font-medium text-neutral-500 mb-1">{label}</span>
-      ) : null}
-      {children}
-    </label>
+// ── 경로 기반 불변 읽기/쓰기 — 항상 "최신 상태"에 적용되어 비동기 업로드끼리 덮어쓰지 않는다.
+function getByPath(root: unknown, path: Path): unknown {
+  return path.reduce<unknown>(
+    (acc, k) => (acc == null ? acc : (acc as Record<string | number, unknown>)[k]),
+    root,
   );
 }
+function setByPath(root: unknown, path: Path, value: unknown): unknown {
+  if (path.length === 0) return value;
+  const [head, ...rest] = path;
+  if (Array.isArray(root)) {
+    const next = root.slice();
+    next[head as number] = setByPath(root[head as number], rest, value);
+    return next;
+  }
+  const obj = isObj(root) ? root : {};
+  return { ...obj, [head]: setByPath(obj[head as string], rest, value) };
+}
 
-// 업로드 전 브라우저에서 이미지를 리사이즈/압축(긴 변 최대 2000px, JPEG 0.85).
-// 큰 사진도 1MB 미만으로 줄여 서버 액션 본문 한도/전송 실패를 방지한다.
+// ── 업로드 전 브라우저에서 이미지 리사이즈/압축(긴 변 2000px, JPEG 0.85).
 async function compressImage(file: File): Promise<File> {
   if (!file.type.startsWith("image/")) return file;
   try {
@@ -128,17 +138,30 @@ async function compressImage(file: File): Promise<File> {
     const base = file.name.replace(/\.[^.]+$/, "") || "image";
     return new File([blob], `${base}.jpg`, { type: "image/jpeg" });
   } catch {
-    return file; // HEIC 등 디코드 불가 시 원본으로 시도
+    return file;
   }
+}
+
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="block">
+      {label ? (
+        <span className="block text-xs font-medium text-neutral-500 mb-1">{label}</span>
+      ) : null}
+      {children}
+    </label>
+  );
 }
 
 function ImageField({
   value,
-  onChange,
+  path,
+  setAt,
   adminReady,
 }: {
   value: string | null;
-  onChange: (v: string | null) => void;
+  path: Path;
+  setAt: SetAt;
   adminReady: boolean;
 }) {
   const [busy, setBusy] = useState(false);
@@ -158,7 +181,7 @@ function ImageField({
       const res = await uploadImageAction(fd);
       if (res.error) setErr(res.error);
       else if (res.url) {
-        onChange(res.url);
+        setAt(path, res.url);
         setDone(true);
       }
     } catch {
@@ -201,7 +224,7 @@ function ImageField({
           {value ? (
             <button
               type="button"
-              onClick={() => onChange(null)}
+              onClick={() => setAt(path, null)}
               className="text-xs text-red-500 hover:underline"
             >
               제거(플레이스홀더)
@@ -212,7 +235,7 @@ function ImageField({
           type="text"
           value={value ?? ""}
           placeholder="또는 이미지 URL 직접 입력"
-          onChange={(e) => onChange(e.target.value || null)}
+          onChange={(e) => setAt(path, e.target.value || null)}
           className="w-full border border-neutral-200 rounded px-2 py-1 text-xs text-neutral-600"
         />
         {err ? <p className="text-xs text-red-600">{err}</p> : null}
@@ -229,27 +252,18 @@ function ImageField({
 function ArrayEditor({
   fieldKey,
   value,
-  onChange,
+  path,
+  setAt,
   adminReady,
   depth,
 }: {
-  fieldKey: string;
+  fieldKey: string | number;
   value: unknown[];
-  onChange: (v: unknown) => void;
+  path: Path;
+  setAt: SetAt;
   adminReady: boolean;
   depth: number;
 }) {
-  function update(i: number, nv: unknown) {
-    const next = [...value];
-    next[i] = nv;
-    onChange(next);
-  }
-  function remove(i: number) {
-    onChange(value.filter((_, j) => j !== i));
-  }
-  function add() {
-    onChange([...value, blankLike(value.length ? value[value.length - 1] : "")]);
-  }
   return (
     <div className="space-y-2">
       <div className="text-xs font-medium text-neutral-500">
@@ -265,7 +279,11 @@ function ArrayEditor({
               <span className="text-[11px] text-neutral-400">#{i + 1}</span>
               <button
                 type="button"
-                onClick={() => remove(i)}
+                onClick={() =>
+                  setAt(path, (arr: unknown) =>
+                    (arr as unknown[]).filter((_, j) => j !== i),
+                  )
+                }
                 className="text-[11px] text-red-500 hover:underline"
               >
                 삭제
@@ -275,14 +293,15 @@ function ArrayEditor({
               <input
                 type="text"
                 value={it}
-                onChange={(e) => update(i, e.target.value)}
+                onChange={(e) => setAt([...path, i], e.target.value)}
                 className="w-full border border-neutral-300 rounded px-2.5 py-1.5 text-sm"
               />
             ) : (
               <FieldEditor
                 fieldKey=""
                 value={it}
-                onChange={(nv) => update(i, nv)}
+                path={[...path, i]}
+                setAt={setAt}
                 adminReady={adminReady}
                 depth={depth + 1}
               />
@@ -292,7 +311,12 @@ function ArrayEditor({
       </div>
       <button
         type="button"
-        onClick={add}
+        onClick={() =>
+          setAt(path, (arr: unknown) => {
+            const a = arr as unknown[];
+            return [...a, blankLike(a.length ? a[a.length - 1] : "")];
+          })
+        }
         className="text-xs px-2.5 py-1 rounded border border-neutral-300 hover:bg-neutral-50"
       >
         + 항목 추가
@@ -304,13 +328,15 @@ function ArrayEditor({
 function FieldEditor({
   fieldKey,
   value,
-  onChange,
+  path,
+  setAt,
   adminReady,
   depth = 0,
 }: {
-  fieldKey: string;
+  fieldKey: string | number;
   value: unknown;
-  onChange: (v: unknown) => void;
+  path: Path;
+  setAt: SetAt;
   adminReady: boolean;
   depth?: number;
 }) {
@@ -319,7 +345,8 @@ function FieldEditor({
       <Row label={labelFor(fieldKey)}>
         <ImageField
           value={value as string | null}
-          onChange={onChange}
+          path={path}
+          setAt={setAt}
           adminReady={adminReady}
         />
       </Row>
@@ -331,7 +358,7 @@ function FieldEditor({
         {isLongText(value) ? (
           <textarea
             value={value}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => setAt(path, e.target.value)}
             rows={Math.min(6, Math.max(2, Math.ceil(value.length / 52)))}
             className="w-full border border-neutral-300 rounded px-2.5 py-1.5 text-sm leading-relaxed"
           />
@@ -339,7 +366,7 @@ function FieldEditor({
           <input
             type="text"
             value={value}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => setAt(path, e.target.value)}
             className="w-full border border-neutral-300 rounded px-2.5 py-1.5 text-sm"
           />
         )}
@@ -352,7 +379,7 @@ function FieldEditor({
         <input
           type="text"
           value={String(value)}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => setAt(path, e.target.value)}
           className="w-40 border border-neutral-300 rounded px-2.5 py-1.5 text-sm"
         />
       </Row>
@@ -363,7 +390,8 @@ function FieldEditor({
       <ArrayEditor
         fieldKey={fieldKey}
         value={value}
-        onChange={onChange}
+        path={path}
+        setAt={setAt}
         adminReady={adminReady}
         depth={depth}
       />
@@ -377,9 +405,10 @@ function FieldEditor({
             key={k}
             fieldKey={k}
             value={v}
+            path={[...path, k]}
+            setAt={setAt}
             adminReady={adminReady}
             depth={depth + 1}
-            onChange={(nv) => onChange({ ...value, [k]: nv })}
           />
         ))}
       </div>
@@ -402,11 +431,19 @@ export default function LandingEditor({
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
   const [dirty, setDirty] = useState(false);
 
-  function updateSection(key: string, nv: unknown) {
-    setContent((prev) => ({ ...prev, [key]: nv }));
+  // 모든 편집이 거치는 단일 경로 기반 함수형 업데이트 → 비동기 업로드끼리 덮어쓰지 않음.
+  const setAt: SetAt = (path, value) => {
+    setContent((prev) => {
+      const cur = getByPath(prev, path);
+      const next =
+        typeof value === "function"
+          ? (value as (c: unknown) => unknown)(cur)
+          : value;
+      return setByPath(prev, path, next) as Record<string, unknown>;
+    });
     setDirty(true);
     setStatus(null);
-  }
+  };
 
   function save() {
     setStatus(null);
@@ -460,8 +497,9 @@ export default function LandingEditor({
               <FieldEditor
                 fieldKey={key}
                 value={content[key]}
+                path={[key]}
+                setAt={setAt}
                 adminReady={adminReady}
-                onChange={(nv) => updateSection(key, nv)}
               />
             </div>
           </details>
