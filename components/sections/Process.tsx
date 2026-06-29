@@ -79,7 +79,13 @@ export default function Process({
             return (
               <div className={`prow rv ${side}`} key={step.t}>
                 <div className="pphoto">
-                  <Slot src={step.image} alt={step.t} label={`${num} ${step.t}`} />
+                  <Slot
+                    src={step.image}
+                    alt={step.t}
+                    label={`${num} ${step.t}`}
+                    eager
+                    sizes="(max-width: 900px) 88vw, 30vw"
+                  />
                 </div>
                 <div className="ptext">
                   <div className="pstep">Step {num}</div>

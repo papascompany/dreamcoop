@@ -12,6 +12,7 @@ export default function Slot({
   label,
   dark = false,
   priority = false,
+  eager = false,
   sizes,
   objectPosition,
 }: {
@@ -20,6 +21,8 @@ export default function Slot({
   label?: string;
   dark?: boolean;
   priority?: boolean;
+  /** lazy 로딩을 끄고 즉시 로드(모바일에서 확실히 보이게). priority보다 가벼움(preload 없음). */
+  eager?: boolean;
   sizes?: string;
   /** 크롭 기준(object-position). 예: "right center", "center", "70% 30%". 좁은 화면에서 어느 영역을 보일지 결정. */
   objectPosition?: string;
@@ -32,6 +35,7 @@ export default function Slot({
           alt={alt}
           fill
           priority={priority}
+          loading={eager && !priority ? "eager" : undefined}
           sizes={sizes ?? "(max-width: 900px) 100vw, 50vw"}
           style={{ objectFit: "cover", objectPosition: objectPosition || "center" }}
         />
